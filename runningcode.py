@@ -2,7 +2,7 @@
 1) output --> this is the output of the zip file with all country codes after using log(n) search function
 2) only_eu --> this is the output after filtering for all EU countries
 """
-
+#%%
 # importing the depending modules
 import re
 import time
@@ -14,12 +14,15 @@ import time
 import pickle
 import pandas as pd
 import sys
+import lognsearch
+
+#%%
 
 # creating the ist of european countries
 european_list_codes1 = ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
                         "FR", "GB", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV",
                         "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
-
+#%%
 # readign ipfile and puting headers as required
 header_names = ['IPmin', 'IPmax', 'Countrycode', 'Countryname']
 ip_locations = pd.read_csv('IP2LOCATION-LITE-DB1.CSV', header=0, names=header_names)
@@ -28,28 +31,7 @@ ip_locations = pd.read_csv('IP2LOCATION-LITE-DB1.CSV', header=0, names=header_na
 prb_ID_EU = pd.read_csv("m_AS_EU_hosting.csv")
 prb_id_list = list(prb_ID_EU["prb_id"])
 
-
-# Functions to search country code with iplocations
-def binarySearch(target_ip, ip_locations):
-    low = 0
-    high = len(ip_locations) - 1
-    iterations = 0
-    Country = "NA"
-    while low <= high:
-        middle = int((low + high) / 2)
-        # check if we found it
-        if target_ip >= ip_locations.IPmin[middle] and target_ip <= ip_locations.IPmax[middle]:
-            Country = ip_locations.Countrycode[middle]
-            break
-        # check which side
-        elif target_ip < ip_locations.IPmin[middle]:
-            iterations += 1
-            high = middle - 1
-        else:
-            iterations += 1
-            low = middle + 1
-    return (Country)
-
+#%%
 
 # asking for user to provide filenam to work with
 filename = input("enter the filename you want to work with")
@@ -73,6 +55,8 @@ endtimereadingfiles = time.time()
 # printing total times for reading lines
 print("total times for reading ", str(count_nrlines), "lines is", endtimereadingfiles - starttimereadinglines,
       "in seconds")
+
+#%%
 
 # this will create variable output filename for saving the output
 outputfile = bz2Filename + 'output' + '.json'
