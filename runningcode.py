@@ -85,36 +85,31 @@ for line in bz2File:
         avg_latency = json_file["avg"]
         #  # Find the ip_destination_address in the ip_location files
         target_ip = int(re.sub(r'\.', '', to_ip))
-        country = binarySearch(target_ip, ip_locations)
+        country = lognsearch.binarySearch(target_ip, ip_locations)
         # # storing the output of the file in jason file
         data = dict(country_code=country, prb_id=prb_id, avg_latency=avg_latency)
-        with open(outputfile, 'a+') as outfile:
-            json.dump(data, outfile)
-            outfile.write('\n')
+        if data["country_code"] in european_list_codes1:
+            with open(outputfile, 'a+') as outfile:
+                json.dump(data, outfile)
+                outfile.write('\n')
 
 # finally close bz2File
 bz2File.close()
 
-## after running the file it filters only for EU countries
-# modifing file name
-newfile = filename + 'only_eu' + '.json'
-print(newfile)
-prb_id_Eu_host = list(prb_ID_EU.prb_id.unique())
-my_file = open(outputfile, 'rt')
-for line in my_file:
-    file = json.loads(line)
-    # print(file)
-    file["country_code"]
-    file["prb_id"]
-    file["avg_latency"]
-    if file["country_code"] in european_list_codes1:
-        # if file["prb_id"] in prb_id_Eu_host:
-        data = dict(country_code=file["country_code"], prb_id=file["prb_id"], avg_latency=file["avg_latency"])
-        with open(newfile, 'a+') as outfile:
-            json.dump(data, outfile)
-            outfile.write('\n')
-# closing the file
-my_file.close()
-
 end_time = time.time()
 print("estimeated time for execution is ", end_time - st)
+
+#%%
+data = 'data_01.json'
+df = pd.read_json(data,lines=True)
+
+data = outputfile
+df = pd.read_json(data,lines=True)
+df = df[df.avg_latency > 0]
+df_country = df.loc[df.country_code.isin(european_list_codes1)]
+
+#%%
+df_country.groupby(by='prb_id')
+
+
+

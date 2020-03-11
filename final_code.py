@@ -79,4 +79,6 @@ probe_data_europe_hosting.info()
 # to print the unique top 5 and bottom 5 ASN, country, Name and prb_id
 m_AS_EU_hosting_sorted = m_AS_EU_hosting.sort_values(by='ASN', ascending=True)  # sorting the dataframe
 m_AS_EU_hosting_sorted.drop_duplicates(subset='ASN')[['Country', 'Name', 'ASN', 'prb_id']][:5]  # for top 5 values
-m_AS_EU_hosting_sorted.drop_duplicates(subset='ASN')[['Country', 'Name', 'ASN', 'prb_id']][:-5]  # for keeeping the last 5
+
+#%%
+m_AS_EU_hosting_sorted.drop_duplicates(subset='ASN')[['Country', 'Name', 'ASN', 'prb_id']][-5:]  # for keeeping the last 5
